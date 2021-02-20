@@ -243,16 +243,13 @@ bot.hears('✅ Написать пост', ctx => {
 // Обработчик бана пользователей
 bot.hears('banUser', async ctx => {
   let userId = ctx.message.reply_to_message.text
-  console.log(userId)
   try {
     banList = JSON.parse(fs.readFileSync(certPath, 'utf8'))
-    console.log(banList)
     if (banList.users.includes(userId) === false) {
       banList.users.push(userId)
       let data = JSON.stringify(banList)
       fs.writeFileSync(certPath, data)
       await ctx.telegram.sendMessage(process.env.TG_ADMIN_ID, `Пользователь ${userId} забанен`)
-      console.log(banList)
     } else {
       await ctx.telegram.sendMessage(process.env.TG_ADMIN_ID, `Пользователь ${userId} уже забанен`)
     }
