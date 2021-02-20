@@ -10,7 +10,7 @@ let banList = {
 
 const certPath = path.join(__dirname, './banList.json')
 
-const bot = new Telegraf(process.env.TG_TOKEN)
+const bot = new Telegraf(process.env.TG_TOKEN ?? '1610706702:AAF0Fjph-KEnMfrS_uw5gYaKXWelDzeKr4s')
 
 const createPostScene = new Scenes.WizardScene(
   'CREATE_POST',
@@ -68,29 +68,28 @@ const createPostScene = new Scenes.WizardScene(
     }
 
     try {
+      if (ctx.message.text.length < 10) {
+        ctx.reply('Текст поста должен содержать больше 10 символов')
+        return
+      }
+
       ctx.wizard.state.post.postText = ctx.message.text
 
-      const tags = 'Теперь выберите и вставьте хэштег, скопировав подходящий:\n\n' + 
-      '<code>#Дети</code>\n' +
-      '<code>#Семья</code>\n' +
-      '<code>#Мода</code>\n' +
-      '<code>#Красота</code>\n' +
-      '<code>#Психология</code>\n' +
-      '<code>#Здоровье</code>\n' +
-      '<code>#Хобби</code>\n' +
-      '<code>#Быт</code>\n' +
-      '<code>#Учёба</code>\n' +
-      '<code>#Работа</code>\n' +
-      '<code>#Виза</code>\n' +
-      '<code>#Документы</code>\n' +
-      '<code>#Законы</code>\n' +
-      '<code>#Жизнь_в_Германии</code>\n' +
-      '<code>#Путешествия</code>\n' +
-      '<code>#Истории</code>\n' +
-      '<code>#Животные</code>\n' +
-      '<code>#Прочее</code>'
+      const message = 'Теперь выберите хэштег, нажав ни подходящий:'
+
+      const tagsKeyboard = Markup.keyboard([
+        ['#Дети','#Семья'],
+        ['#Мода','#Красота'],
+        ['#Психология','#Здоровье'],
+        ['#Хобби','#Быт'],
+        ['#Учёба','#Работа'],
+        ['#Виза','#Документы'],
+        ['#Законы','#Жизнь_в_Германии'],
+        ['#Путешествия','#Истории'],
+        ['#Животные','#Прочее']
+      ]).oneTime(true).resize(true).reply_markup
     
-      ctx.reply(tags, {parse_mode: 'HTML'})
+      ctx.reply(message, {parse_mode: 'HTML', reply_markup: tagsKeyboard})
       return ctx.wizard.next()
     } catch (err) {
       console.log('Ошибка при добалении хэштега')
