@@ -1,16 +1,9 @@
 const {Telegraf, Scenes, Markup, session} = require('telegraf')
 const axios = require('axios')
 const FormData = require('form-data')
-// const bodyParser = require('body-parser')
 const fs = require('fs')
 const path = require('path')
 
-// const VK_SECRET_CODE = '807b415d66ab602479'
-// const VK_TOKEN = 'f471b98eb6e24a520f82ab6d4b14e8ca10eacc5d90d8a0349adc050f530bed576dcb4d9a385f101586f95'
-// const VK_VERSION = '5.130'
-// const TG_TOKEN = '1610706702:AAF0Fjph-KEnMfrS_uw5gYaKXWelDzeKr4s'
-// const PUBLIC_ID = -181611663
-// const TG_ADMIN_ID = 165652330
 let banList = {
   users: []
 }
@@ -247,6 +240,7 @@ bot.hears('✅ Написать пост', ctx => {
   }
 })
 
+// Обработчик бана пользователей
 bot.hears('banUser', async ctx => {
   let userId = ctx.message.reply_to_message.text
   console.log(userId)
@@ -268,11 +262,13 @@ bot.hears('banUser', async ctx => {
   }
 })
 
+// Обработчик обновления бан-листа
 bot.hears('updateBanList', async ctx => {
   banList = await JSON.parse(fs.readFileSync(certPath, 'utf8'))
   ctx.telegram.sendMessage(process.env.TG_ADMIN_ID, 'Бан-лист обновлен ')
 })
 
+// Обработчик проверка бан-листа
 bot.hears('checkBanList', ctx => {
   ctx.reply(banList.users)
 })
