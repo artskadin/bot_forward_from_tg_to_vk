@@ -10,7 +10,7 @@ let banList = {
 
 const certPath = path.join(__dirname, './banList.json')
 
-const bot = new Telegraf(process.env.TG_TOKEN ?? '1610706702:AAF0Fjph-KEnMfrS_uw5gYaKXWelDzeKr4s')
+const bot = new Telegraf(process.env.TG_TOKEN)
 
 const createPostScene = new Scenes.WizardScene(
   'CREATE_POST',
