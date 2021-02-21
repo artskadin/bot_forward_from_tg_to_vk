@@ -44,8 +44,8 @@ const createPostScene = new Scenes.WizardScene(
     }
 
     try {
-      if (ctx.message.text.length < 5) {
-        ctx.reply('Заголовок должен содержать больше 5 символов')
+      if (ctx.message.text.length < 5 && ctx.message.text.length > 26) {
+        ctx.reply('Заголовок должен содержать минимум 5 символов и максимум 25')
         return
       }
 
@@ -68,14 +68,14 @@ const createPostScene = new Scenes.WizardScene(
     }
 
     try {
-      if (ctx.message.text.length < 10) {
-        ctx.reply('Текст поста должен содержать больше 10 символов')
+      if (ctx.message.text.length < 10 && ctx.message.text.length > 4096) {
+        ctx.reply('Текст поста должен содержать минимум 10 символов, максимум 4096')
         return
       }
 
       ctx.wizard.state.post.postText = ctx.message.text
 
-      const message = 'Теперь выберите хэштег, нажав ни подходящий:'
+      const message = 'Теперь выберите хэштег, нажав на подходящий:'
 
       const tagsKeyboard = Markup.keyboard([
         ['#Дети','#Семья'],
@@ -171,7 +171,7 @@ const createPostScene = new Scenes.WizardScene(
             const messageForAdmin = `Пользователь ${ctx.message.from.username} с id: ${ctx.message.from.id} отправил текст:\n\n` + ctx.wizard.state.finalPost
             const userId = ctx.message.from.id
   
-            await ctx.telegram.sendMessage(process.env.TG_ADMIN_ID, messageForAdmin)
+            await ctx.telegram.sendMessage(process.env.TG_ADMIN_ID, messageForAdmin, {parse_mode: 'HTML'})
             await ctx.telegram.sendMessage(process.env.TG_ADMIN_ID, userId)
         
             await ctx.reply(
