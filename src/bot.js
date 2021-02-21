@@ -163,8 +163,10 @@ const createPostScene = new Scenes.WizardScene(
               data: bodyFormData,
               headers: bodyFormData.getHeaders(),
             })
+
+            await ctx.telegram.sendMessage('-518188358', ctx.wizard.state.finalPost)
         
-            console.log('Пост был успешно отправлен в группу vk')
+            console.log('Пост был успешно отправлен в группу vk и telegram')
   
             const messageForAdmin = `Пользователь ${ctx.message.from.username} с id: ${ctx.message.from.id} отправил текст:\n\n` + ctx.wizard.state.finalPost
             const userId = ctx.message.from.id
