@@ -271,4 +271,8 @@ bot.hears('checkBanList', ctx => {
   ctx.reply(banList.users)
 })
 
+bot.on('text', ctx => {
+  ctx.reply('Если что-то пошло не так, попробуй сначала, написав команду /start')
+})
+
 bot.launch()
